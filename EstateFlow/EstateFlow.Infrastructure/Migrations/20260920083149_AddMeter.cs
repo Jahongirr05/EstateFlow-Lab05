@@ -1,9 +1,9 @@
-﻿using System;
+using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace EstateFlow.Server.Migrations
+namespace EstateFlow.Infrastructure.Migrations
 {
     /// <inheritdoc />
     public partial class AddMeter : Migration
