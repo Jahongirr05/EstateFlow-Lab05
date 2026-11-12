@@ -1,3 +1,4 @@
+
 using EstateFlow.Application.Contracts.Meters;
 using EstateFlow.Application.Contracts.Properties;
 using EstateFlow.Application;
@@ -17,8 +18,8 @@ namespace EstateFlow.Server.Controllers
         private readonly IValidator<CreatePropertyRequest> _createValidator;
         private readonly IValidator<UpdatePropertyRequest> _updateValidator;
 
-        public PropertiesController(IApplicationDbContext context, 
-            IValidator<CreatePropertyRequest> createValidator, 
+        public PropertiesController(IApplicationDbContext context,
+            IValidator<CreatePropertyRequest> createValidator,
             IValidator<UpdatePropertyRequest> updateValidator)
         {
             _context = context;
@@ -33,6 +34,7 @@ namespace EstateFlow.Server.Controllers
             var properties = await _context.Properties
                 .ProjectToType<PropertyResponse>()
                 .ToListAsync();
+
             return Ok(properties);
         }
 
@@ -57,7 +59,8 @@ namespace EstateFlow.Server.Controllers
         [HttpGet("{id}/meters")]
         public async Task<ActionResult<IEnumerable<MeterResponse>>> GetPropertyMeters(Guid id)
         {
-            var propertyExists = await _context.Properties.AnyAsync(p => p.Id == id);
+            var propertyExists = await _context.Properties
+                .AnyAsync(p => p.Id == id);
 
             if (!propertyExists)
             {
@@ -70,6 +73,27 @@ namespace EstateFlow.Server.Controllers
                 .ToListAsync();
 
             return Ok(meters);
+        }
+
+        // GET: api/properties/{id}/images
+        [HttpGet("{id}/images")]
+        public async Task<ActionResult<IEnumerable<PropertyImageResponse>>> GetPropertyImages(Guid id)
+        {
+            var propertyExists = await _context.Properties
+                .AnyAsync(p => p.Id == id);
+
+            if (!propertyExists)
+            {
+                return NotFound();
+            }
+
+            var images = await _context.PropertyImages
+                .Where(i => i.PropertyId == id)
+                .OrderBy(i => i.UploadedAt)
+                .ProjectToType<PropertyImageResponse>()
+                .ToListAsync();
+
+            return Ok(images);
         }
 
         // POST: api/properties
@@ -162,4 +186,3 @@ namespace EstateFlow.Server.Controllers
         }
     }
 }
-
