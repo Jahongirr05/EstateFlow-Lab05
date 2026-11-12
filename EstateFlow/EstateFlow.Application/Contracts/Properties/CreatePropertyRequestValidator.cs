@@ -2,12 +2,19 @@ using EstateFlow.Application;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
-namespace EstateFlow.Server.Contracts.Properties
+namespace EstateFlow.Application.Contracts.Properties
 {
-    public class UpdatePropertyRequestValidator : AbstractValidator<UpdatePropertyRequest>
+    public class CreatePropertyRequestValidator : AbstractValidator<CreatePropertyRequest>
     {
-        public UpdatePropertyRequestValidator(IApplicationDbContext context)
+        public CreatePropertyRequestValidator(IApplicationDbContext context)
         {
+            RuleFor(x => x.Code)
+                .NotEmpty()
+                .MaximumLength(10)
+                .MustAsync(async (code, cancellationToken) =>
+                    !await context.Properties.AnyAsync(p => p.Code == code, cancellationToken))
+                .WithMessage("A property with code '{PropertyValue}' already exists.");
+
             RuleFor(x => x.Name)
                 .NotEmpty()
                 .MaximumLength(100);

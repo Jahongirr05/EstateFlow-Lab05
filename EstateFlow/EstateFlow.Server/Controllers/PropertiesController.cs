@@ -1,5 +1,5 @@
-using EstateFlow.Server.Contracts.Meters;
-using EstateFlow.Server.Contracts.Properties;
+using EstateFlow.Application.Contracts.Meters;
+using EstateFlow.Application.Contracts.Properties;
 using EstateFlow.Application;
 using EstateFlow.Domain;
 using FluentValidation;

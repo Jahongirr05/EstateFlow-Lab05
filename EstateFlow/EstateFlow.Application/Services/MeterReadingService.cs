@@ -1,9 +1,9 @@
-using EstateFlow.Server.Contracts.Meters;
+using EstateFlow.Application.Contracts.Meters;
 using EstateFlow.Application;
 using EstateFlow.Domain;
 using Microsoft.EntityFrameworkCore;
 
-namespace EstateFlow.Server.Services
+namespace EstateFlow.Application.Services
 {
     public class MeterReadingService : IMeterReadingService
     {
